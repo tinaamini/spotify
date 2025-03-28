@@ -4,27 +4,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spotify/constant/app_color.dart';
+import 'package:spotify/data/models/user/singIn_model.dart';
 import 'package:spotify/routes/routs_name.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constant/app_text_style.dart';
+import '../../../data/services/user/Auth.dart';
 import '../../../di/di.dart';
-import '../../../logic/cubit/text_field_cubit.dart';
-import '../../../logic/state/text_field_state.dart';
+import '../../../logic/cubit/register_cubit.dart';
+import '../../../logic/cubit/singIn_cubit.dart';
+import '../../../logic/state/singIn_state.dart';
 import '../../widgets/TextField.dart';
 import '../../widgets/customButton.dart';
 import '../../widgets/customButtonBack.dart';
 
 class SingIn extends StatelessWidget {
   final VoidCallback onTap;
-  final TextFieldCubit cubit = getIt<TextFieldCubit>();
+  final AuthService _authService = AuthService();
 
   SingIn({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocProvider.value(
-        value: cubit,
+    child:  BlocProvider(
+    create: (context) => getIt<SignInCubit>(),
         child: Scaffold(
           body: SingleChildScrollView(
             child: Column(
@@ -62,7 +65,7 @@ class SingIn extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        context.goNamed(RouteName.Home);
+                        context.goNamed(RouteName.mainHome);
                       },
                       child: Text(
                         "click here",
@@ -75,7 +78,7 @@ class SingIn extends StatelessWidget {
                     ),
                   ],
                 ),
-                BlocBuilder<TextFieldCubit, TextFieldState>(
+                BlocBuilder<SignInCubit, SignInState>(
                   builder: (context, state) {
                     return Padding(
                       padding: EdgeInsets.only(top: 30.w),
@@ -83,13 +86,13 @@ class SingIn extends StatelessWidget {
                         children: [
                           CustomTextField(
                             obscureText: false,
-                            onChanged: cubit.updateEmail,
+                            onChanged: (value) => context.read<SignInCubit>().updateEmail(value),
                             label: "enter username or email",
                           ),
                           SizedBox(height: 25.w),
                           CustomTextField(
                             obscureText: true,
-                            onChanged: cubit.updatePassword,
+                            onChanged: (value) => context.read<SignInCubit>().updatePassword(value),
                             label: "password",
                           ),
                           Padding(
@@ -100,7 +103,7 @@ class SingIn extends StatelessWidget {
                                 "Recovery password",
                                 style: AppTextStyle.TextButton.copyWith(
                                   fontSize: 13.w,
-                                  color: AppColor.greenwhite,
+                                  color: AppColor.graywhite,
                                 ),
                               ),
                             ),
@@ -110,7 +113,19 @@ class SingIn extends StatelessWidget {
                             height: 80.w,
                             width: 335,
                             text: "Sing in",
-                            onTap: () {},
+                            onTap: () async {
+                              await context.read<SignInCubit>().signIn();
+                              if (state.accessToken != null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('ورود موفق!')),
+                                );
+                                context.goNamed(RouteName.mainHome);
+                              } else if (state.error != null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(state.error!)),
+                                );
+                              }
+                            },
                           ),
                           SizedBox(height: 30.w),
                           Row(

@@ -7,27 +7,26 @@ import 'package:spotify/constant/app_color.dart';
 import 'package:spotify/routes/routs_name.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constant/app_text_style.dart';
-import '../../../data/models/user/register.dart';
+import '../../../data/models/user/register_model.dart';
 import '../../../data/services/user/Auth.dart';
 import '../../../di/di.dart';
-import '../../../logic/cubit/text_field_cubit.dart';
-import '../../../logic/state/text_field_state.dart';
+import '../../../logic/cubit/register_cubit.dart';
+import '../../../logic/state/register_state.dart';
 import '../../widgets/TextField.dart';
 import '../../widgets/customButton.dart';
 import '../../widgets/customButtonBack.dart';
 
 class Register extends StatelessWidget {
   final VoidCallback onTap;
-  final TextFieldCubit cubit = getIt<TextFieldCubit>();
-  final AuthService _authService = AuthService();
+  final RegisterCubit cubit = getIt<RegisterCubit>();
 
   Register({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocProvider.value(
-        value: cubit,
+      child: BlocProvider(
+        create: (context) => getIt<RegisterCubit>(),
         child: Scaffold(
           body: SingleChildScrollView(
             child: Column(
@@ -65,7 +64,7 @@ class Register extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        context.goNamed(RouteName.Home);
+                        context.goNamed(RouteName.mainHome);
                       },
                       child: Text(
                         "click here",
@@ -78,7 +77,7 @@ class Register extends StatelessWidget {
                     ),
                   ],
                 ),
-                BlocBuilder<TextFieldCubit, TextFieldState>(
+                BlocBuilder<RegisterCubit, RegisterState>(
                   builder: (context, state) {
                     return Padding(
                       padding: EdgeInsets.only(top: 30.w),
@@ -86,19 +85,19 @@ class Register extends StatelessWidget {
                         children: [
                           CustomTextField(
                             obscureText: false,
-                            onChanged: cubit.updatefirstName,
+                            onChanged: (value) => context.read<RegisterCubit>().updateFullName(value),
                             label: "Full Name",
                           ),
                           SizedBox(height: 25.w),
                           CustomTextField(
                             obscureText: false,
-                            onChanged: cubit.updateEmail,
+                            onChanged: (value) => context.read<RegisterCubit>().updateEmail(value),
                             label: "Enter Email",
                           ),
                           SizedBox(height: 25.w),
                           CustomTextField(
                             obscureText: false,
-                            onChanged: cubit.updatePassword,
+                            onChanged: (value) => context.read<RegisterCubit>().updatePassword(value),
                             label: "Password",
                           ),
 
@@ -108,36 +107,12 @@ class Register extends StatelessWidget {
                             width: 335,
                             text: "Create Accouznt",
                             onTap: () async {
-                              final fullName = cubit.state.fullName;
-                              final email = cubit.state.email;
-                              final password = cubit.state.password;
-                              if (fullName.isNotEmpty &&
-                                  email.isNotEmpty &&
-                                  password.isNotEmpty) {
-                                final user = UserRegister(
-                                  fullName: fullName,
-                                  email: email,
-                                  password: password,
-                                );
-                                bool success = await _authService.registerUser(
-                                  user,
-                                );
-                                if (success) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('ثبت‌نام موفق!')),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('خطا در ثبت‌نام')),
-                                  );
-                                }
-                              } else {
+                              await context.read<RegisterCubit>().register();
+                              if (state.success) {
+                                context.goNamed(RouteName.SingIn);
+                              } else if (state.error != null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'لطفاً همه فیلدها را پر کنید',
-                                    ),
-                                  ),
+                                  SnackBar(content: Text(state.error!)),
                                 );
                               }
                             },

@@ -1,15 +1,18 @@
 import 'package:go_router/go_router.dart';
 import 'package:spotify/routes/routs_name.dart';
-import '../presentation/screens/music/home.dart';
+import '../presentation/screens/getStarter.dart';
+import '../presentation/screens/loading.dart';
 import '../presentation/screens/user/Register.dart';
 import '../presentation/screens/user/RegisterOrSingUp.dart';
 import '../presentation/screens/user/SingIn.dart';
+import '../presentation/screens/chooseMode.dart';
+import '../presentation/widgets/nav.dart';
 
 
 
 
 final GoRouter router = GoRouter(
-  initialLocation: "/RegisterOrSingUp",
+  initialLocation: "/Loading",
   routes: [
     GoRoute(
       name: RouteName.RegisterOrSingUp,
@@ -27,9 +30,24 @@ final GoRouter router = GoRouter(
       builder: (context, state) => Register(onTap: () {  },),
     ),
     GoRoute(
-      name: RouteName.Home,
-      path: "/Home",
-      builder: (context, state) => Home(),
+      name: RouteName.mainHome,
+      path: "/MainScreen",
+      builder: (context, state) => MainScreen(),
+    ),
+    GoRoute(
+      name: RouteName.Loading,
+      path: "/Loading",
+      builder: (context, state) => Loading(),
+    ),
+    GoRoute(
+      name: RouteName.GetStarter,
+      path: "/GetStarter",
+      builder: (context, state) => GetStarter(),
+    ),
+    GoRoute(
+      name: RouteName.Choosemode,
+      path: "/Choosemode",
+      builder: (context, state) => Choosemode(),
     ),
   ],
 );
