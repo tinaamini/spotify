@@ -1,4 +1,4 @@
-import 'package:spotify/presentation/screens/loading.dart';
+import 'package:spotify/presentation/screens/splash/loading.dart';
 
 class RouteName {
   RouteName._();

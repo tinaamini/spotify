@@ -1,10 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/services/user/Auth.dart';
-import '../state/singIn_state.dart';
+import '../../../core/di/di.dart';
+import '../../../data/services/tokenmanager.dart';
+import '../../../data/services/user/Auth.dart';
+import '../../state/user/singIn_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
   final AuthService _apiService;
-  SignInCubit(this._apiService): super (SignInState());
+  final TokenManager tokenManager;
+  SignInCubit(this._apiService, this.tokenManager): super (SignInState());
   void updateEmail(String value) {
     emit(state.copyWith(email: value));
   }
@@ -20,6 +23,9 @@ class SignInCubit extends Cubit<SignInState> {
     emit(state.copyWith(isLoading: true, error: null, accessToken: null));
     try {
       final response = await _apiService.login(state.email, state.password);
+      final token = response['access_token'];
+      getIt<TokenManager>().saveToken(token);
+
       emit(state.copyWith(
         isLoading: false,
         accessToken: response['access_token'],

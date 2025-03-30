@@ -22,9 +22,6 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/.svg
-  String get aSvg => 'assets/icons/.svg';
-
   /// File path: assets/icons/Discovery 1.svg
   String get discovery1 => 'assets/icons/Discovery 1.svg';
 
@@ -90,10 +87,10 @@ class $AssetsIconsGen {
   String get apple => 'assets/icons/apple.svg';
 
   /// File path: assets/icons/ariana.png
-  AssetGenImage get arianaPng => const AssetGenImage('assets/icons/ariana.png');
+  AssetGenImage get ariana => const AssetGenImage('assets/icons/ariana.png');
 
-  /// File path: assets/icons/ariana.svg
-  String get arianaSvg => 'assets/icons/ariana.svg';
+  /// File path: assets/icons/avatar-girl-svgrepo-com.svg
+  String get avatarGirlSvgrepoCom => 'assets/icons/avatar-girl-svgrepo-com.svg';
 
   /// File path: assets/icons/banner.svg
   String get banner => 'assets/icons/banner.svg';
@@ -109,7 +106,6 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<dynamic> get values => [
-    aSvg,
     discovery1,
     doalipaSvg,
     doalipaPng,
@@ -130,8 +126,8 @@ class $AssetsIconsGen {
     vector6,
     vector,
     apple,
-    arianaPng,
-    arianaSvg,
+    ariana,
+    avatarGirlSvgrepoCom,
     banner,
     banner2,
     google,

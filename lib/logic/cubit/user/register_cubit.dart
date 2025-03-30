@@ -2,7 +2,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spotify/data/models/user/register_model.dart';
 import 'package:spotify/data/services/user/Auth.dart';
-import 'package:spotify/logic/state/register_state.dart';
+import 'package:spotify/logic/state/user/register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
   final AuthService _authService;

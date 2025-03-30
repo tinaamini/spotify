@@ -5,11 +5,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:spotify/constant/app_color.dart';
 import 'package:spotify/constant/app_text_style.dart';
-
+import '../../../core/di/di.dart';
+import '../../../core/network/api_client.dart';
+import '../../../data/models/music/artist.dart';
 import '../../../data/models/music/artistmodel.dart';
 import '../../../data/models/music/playlistModel.dart';
-import '../../../di/di.dart';
+import '../../../data/services/music/musicServer.dart';
+import '../../../logic/cubit/music/allMusic_cubit.dart';
+import '../../../logic/cubit/music/artist_cubit.dart';
 import '../../../logic/cubit/music/tab_cubit.dart';
+import '../../../logic/state/music/allMusic_cubit.dart';
+import '../../../logic/state/music/artist_state.dart';
 import '../../../logic/state/music/tabState.dart';
 import '../../widgets/btn_play.dart';
 
@@ -20,8 +26,19 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<TabCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TabCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AllMusicCubit(
+            MusicServer(getIt<ApiClient>()),
+          )..fetchMusics(),
+        ),
+        BlocProvider(
+        create: (context) => ArtistCubit(getIt<MusicServer>())..fetchArtists())
+      ],
       child: SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
@@ -224,67 +241,96 @@ class Home extends StatelessWidget {
       ),
     );
   }
-  final List<PlayListModel> playlist = [
-    PlayListModel(
-      nameMusic: 'As It Was',
-      nameArtist: 'Harry Styles',
-        timeMusic:'5:33'
-    ),
-    PlayListModel(
 
-      nameMusic: 'God Did',
-      nameArtist: 'DJ Khaled',
-        timeMusic:'3:43'
-    ),
-
-  ];
   Widget _buildPlayList(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal:30.w),
-      child: Container(width: double.infinity,height: 300.w,
-        child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: playlist.length,
-        itemBuilder: (context, index) {
-          final item = playlist[index];
-          return Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+      padding: EdgeInsets.symmetric(horizontal: 30.w),
+      child: Container(
+        width: double.infinity,
+        height: 300.w,
+        child: BlocBuilder<ArtistCubit, ArtistState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state.error != null) {
+              return Center(child: Text('Error loading artists: ${state.error}'));
+            }
+    return BlocBuilder<AllMusicCubit, AllMusicState>(
+    builder: (context, musicState) {
+            if (musicState is LoadingMusic) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (musicState is LoadedMusic) {
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: musicState.musics.length,
+                itemBuilder: (context, index) {
+                  final music = musicState.musics[index];
+                  final artist = state.artists.firstWhere(
+                        (artist) => artist.id == music.artistId,
+                    orElse: () => Artist(id: music.artistId, name: 'Unknown Artist'),
+                  );
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 37.w,
+                          height: 37.w,
+                          child: CustomBtnPlay(onTap: () {
+                            print('Play: ${music.audioUrl}');
+                          }),
+                        ),
+                        SizedBox(width: 25.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              music.name,
+                              style: AppTextStyle.TextBold.copyWith(fontSize: 16.w),
+                            ),
+                            SizedBox(height: 5.h),
+                            Text(
+                              artist.name,
+                              style: AppTextStyle.TextBold.copyWith(fontSize: 12.w),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 65.w),
+                        Text(
+                          'N/A',
+                          style: AppTextStyle.TextBold.copyWith(
+                            fontSize: 15.w,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(width: 15.w),
+                        GestureDetector(
+                          onTap: () {
 
-                Container(width: 37.w,height: 37.w,
-                    child: CustomBtnPlay(onTap: (){})),
-                SizedBox(width: 25.w,),
-                Column(
-                  children: [
-                    Text(
-                      item.nameMusic,
-                      style: AppTextStyle.TextBold.copyWith(fontSize: 16.w),
+                            if (music.isLiked) {
+                              context.read<AllMusicCubit>().unlikeMusic(music.id);
+                            } else {
+                              context.read<AllMusicCubit>().likeMusic(music.id);
+                            }
+                          },
+                          child: SvgPicture.asset(music.isLiked?"assets/icons/Heart3.svg":"assets/icons/Heart.svg"),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 5.h),
-                    Text(
-                      item.nameArtist,
-                      style: AppTextStyle.TextBold.copyWith(fontSize: 12.w),
-                    ),
-                  ],
-                ),
-                SizedBox(width:65.w),
-                Text(
-                  item.timeMusic,
-                  style: AppTextStyle.TextBold.copyWith(
-                    fontSize: 15.w,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(width: 15.w,),
-                GestureDetector(onTap: (){},
-                    child: SvgPicture.asset("assets/icons/Heart.svg"))
-
-              ],
-            ),
-          );
-        },
-              ),
+                  );
+                },
+              );
+            } else if (musicState is ErrorMusic) {
+              return Center(child: Text('Error: ${musicState.message}'));
+            } else {
+              return const Center(child: Text('No music loaded yet'));
+            }
+    },
+    );
+          },
+        ),
       ),
     );
   }

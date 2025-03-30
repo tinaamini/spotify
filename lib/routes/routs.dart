@@ -1,11 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:spotify/routes/routs_name.dart';
-import '../presentation/screens/getStarter.dart';
-import '../presentation/screens/loading.dart';
+import '../presentation/screens/splash/getStarter.dart';
+import '../presentation/screens/splash/loading.dart';
 import '../presentation/screens/user/Register.dart';
 import '../presentation/screens/user/RegisterOrSingUp.dart';
 import '../presentation/screens/user/SingIn.dart';
-import '../presentation/screens/chooseMode.dart';
+import '../presentation/screens/splash/chooseMode.dart';
 import '../presentation/widgets/nav.dart';
 
 
@@ -46,7 +46,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: RouteName.Choosemode,
-      path: "/Choosemode",
+      path: "/${RouteName.Choosemode}",
       builder: (context, state) => Choosemode(),
     ),
   ],

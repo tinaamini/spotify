@@ -1,19 +1,18 @@
 import 'package:dio/dio.dart';
-
+import '../../../core/di/di.dart';
+import '../../../core/exception/exceptions.dart';
+import '../../../core/network/api_client.dart';
 import '../../models/user/register_model.dart';
+import '../tokenmanager.dart';
 
 class AuthService {
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://app.mond-soft.com/spotify/',
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
-    ),
-  );
+  final ApiClient _apiClient;
+
+  AuthService(this._apiClient);
 
   Future<bool> registerUser(UserRegister user) async {
     try {
-      final response = await _dio.post(
+      final response = await _apiClient.post(
         '/users/register',
         data: user.toJson(),
       );
@@ -21,13 +20,14 @@ class AuthService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('ثبت‌نام با موفقیت انجام شد: ${response.data}');
         return true;
-      } else {
-        print('خطا در ثبت‌نام: ${response.statusCode}');
-        return false;
       }
+
+      throw DioException(
+        response: response,
+        requestOptions: response.requestOptions,
+      );
     } on DioException catch (e) {
-      print('خطای شبکه: ${e.response?.data ?? e.message}');
-      return false;
+      throw handleDioException(e);
     }
   }
 
@@ -39,29 +39,47 @@ class AuthService {
         'username': email,
         'password': password,
       };
-      print('داده‌های ارسالی برای ورود (Form): $data');
-      final response = await _dio.post(
+      final response = await _apiClient.post(
         '/users/login',
         data: data,
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
         ),
       );
-      print('پاسخ ورود: ${response.data}');
-      return response.data as Map<String, dynamic>;
-    } on DioException catch (e) {
-      if (e.response != null) {
-        print('خطای سرور: کد ${e.response?.statusCode}, داده: ${e.response?.data}');
-        throw Exception(
-            e.response?.data['message'] ?? e.response?.data.toString() ?? 'ورود ناموفق: ${e.response?.statusCode}');
-      } else {
-        print('خطای شبکه: ${e.message}');
-        throw Exception('خطای شبکه: ${e.message}');
+      if (response.statusCode == 200) {
+        return response.data as Map<String, dynamic>;
       }
+
+      throw DioException(
+        response: response,
+        requestOptions: response.requestOptions,
+      );
+    } on DioException catch (e) {
+      throw handleDioException(e);
     }
   }
 
+  Future<Map<String, dynamic>> profileUser(String token) async {
+    try {
+      final response = await _apiClient.get(
+        "/users/me",
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
 
-
-
+      if (response.statusCode == 200) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw DioException(
+          response: response,
+          requestOptions: response.requestOptions,
+          error: 'Failed with status code: ${response.statusCode}',
+        );
+      }
+    } on DioException catch (e) {
+      throw handleDioException(e);
+    }
+  }
 }

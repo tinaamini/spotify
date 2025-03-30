@@ -5,8 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spotify/constant/app_text_style.dart';
 
-import '../../routes/routs_name.dart';
-import '../widgets/customButton.dart';
+import '../../../routes/routs_name.dart';
+import '../../widgets/customButton.dart';
 class GetStarter extends StatelessWidget {
   const GetStarter({super.key});
 
@@ -25,7 +25,7 @@ class GetStarter extends StatelessWidget {
             Positioned(top: 40.w,left: 90.w,
                 child: SvgPicture.asset("assets/icons/Vector (6).svg")),
             
-            Positioned(bottom:30.w,left: 50.w,
+            Positioned(bottom:30.w,left: 35.w,
                 child:Column(crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text("Enjoy Listening to Music",style: AppTextStyle.TextBold,),

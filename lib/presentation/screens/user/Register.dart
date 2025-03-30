@@ -7,18 +7,17 @@ import 'package:spotify/constant/app_color.dart';
 import 'package:spotify/routes/routs_name.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constant/app_text_style.dart';
-import '../../../data/models/user/register_model.dart';
+import '../../../core/di/di.dart';
 import '../../../data/services/user/Auth.dart';
-import '../../../di/di.dart';
-import '../../../logic/cubit/register_cubit.dart';
-import '../../../logic/state/register_state.dart';
+import '../../../logic/cubit/user/register_cubit.dart';
+import '../../../logic/state/user/register_state.dart';
 import '../../widgets/TextField.dart';
 import '../../widgets/customButton.dart';
 import '../../widgets/customButtonBack.dart';
 
 class Register extends StatelessWidget {
   final VoidCallback onTap;
-  final RegisterCubit cubit = getIt<RegisterCubit>();
+
 
   Register({super.key, required this.onTap});
 
@@ -26,7 +25,7 @@ class Register extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocProvider(
-        create: (context) => getIt<RegisterCubit>(),
+        create: (context) => RegisterCubit(getIt<AuthService>()),
         child: Scaffold(
           body: SingleChildScrollView(
             child: Column(
@@ -77,7 +76,17 @@ class Register extends StatelessWidget {
                     ),
                   ],
                 ),
-                BlocBuilder<RegisterCubit, RegisterState>(
+          BlocListener<RegisterCubit, RegisterState>(
+            listener: (context, state) {
+              if (state.success) {
+                context.goNamed(RouteName.SingIn); // نویگیشن اینجا انجام می‌شه
+              } else if (state.error != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.error!)),
+                );
+              }
+            },
+            child:BlocBuilder<RegisterCubit, RegisterState>(
                   builder: (context, state) {
                     return Padding(
                       padding: EdgeInsets.only(top: 30.w),
@@ -106,15 +115,18 @@ class Register extends StatelessWidget {
                             height: 80.w,
                             width: 335,
                             text: "Create Accouznt",
-                            onTap: () async {
-                              await context.read<RegisterCubit>().register();
-                              if (state.success) {
-                                context.goNamed(RouteName.SingIn);
-                              } else if (state.error != null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(state.error!)),
-                                );
-                              }
+                            // onTap: () async {
+                            //   await context.read<RegisterCubit>().register();
+                            //   // if (state.success) {
+                            //   //   context.goNamed(RouteName.SingIn);
+                            //   // } else if (state.error != null) {
+                            //   //   ScaffoldMessenger.of(context).showSnackBar(
+                            //   //     SnackBar(content: Text(state.error!)),
+                            //   //   );
+                            //   // }
+                            // },
+                            onTap: state.isLoading ?null : (){
+                              context.read<RegisterCubit>().register();
                             },
                           ),
                           SizedBox(height: 30.w),
@@ -194,7 +206,7 @@ class Register extends StatelessWidget {
                       ),
                     );
                   },
-                ),
+                ),)
               ],
             ),
           ),

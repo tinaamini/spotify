@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:spotify/constant/app_color.dart';
 import 'package:spotify/routes/routs.dart';
-import 'di/di.dart';
+import 'core/di/di.dart';
+
 
 void main() {
   setupDependencies();

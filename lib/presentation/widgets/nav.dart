@@ -5,8 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:spotify/constant/app_color.dart';
 import '../screens/music/favorite.dart';
 import '../screens/music/home.dart';
-import '../screens/user/discovery.dart';
-import '../screens/user/profile.dart';
+import '../screens/user/Profile.dart';
+import '../screens/music/discovery.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

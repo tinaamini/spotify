@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spotify/constant/app_color.dart';
 
-import '../../routes/routs_name.dart';
+import '../../../routes/routs_name.dart';
 class Loading extends StatefulWidget {
   const Loading({super.key});
 
