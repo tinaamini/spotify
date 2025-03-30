@@ -25,14 +25,4 @@ class Music {
       isLiked: json['is_liked'] ?? false,
     );
   }
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'artist_id': artistId,
-      'audio_url': audioUrl,
-      'cover_url': coverUrl,
-      'is_liked': isLiked,
-    };
-  }
 }

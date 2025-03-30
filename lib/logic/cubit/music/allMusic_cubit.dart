@@ -19,9 +19,24 @@ class AllMusicCubit extends Cubit<AllMusicState>{
         skip: skip,
         limit: limit,
       );
+      final likedMusics = await musicService.getLikedMusic();
+      for (var music in musics) {
+        music.isLiked = likedMusics.any((liked) => liked.id == music.id);
+      }
       emit(LoadedMusic(musics));
     } catch (e) {
       emit(ErrorMusic(e.toString()));
+    }
+  }
+  void updateLikeStatus(int musicId, bool isLiked) {
+    if (state is LoadedMusic) {
+      final currentState = state as LoadedMusic;
+      final musics = currentState.musics;
+      final musicIndex = musics.indexWhere((music) => music.id == musicId);
+      if (musicIndex != -1) {
+        musics[musicIndex].isLiked = isLiked;
+        emit(LoadedMusic(List.from(musics)));
+      }
     }
   }
   Future<void> likeMusic(int musicId) async {
@@ -32,17 +47,10 @@ class AllMusicCubit extends Cubit<AllMusicState>{
 
       if (musicIndex != -1 && !musics[musicIndex].isLiked) {
         try {
-
-          musics[musicIndex].isLiked = true;
-          emit(LoadedMusic(List.from(musics)));
-
-
           await musicService.likeMusic(musicId);
+          updateLikeStatus(musicId, true);
         } catch (e) {
-
-          musics[musicIndex].isLiked = false;
-          emit(LoadedMusic(List.from(musics)));
-          emit(ErrorMusic(e.toString()));
+          updateLikeStatus(musicId, false);
         }
       }
     }
@@ -56,17 +64,10 @@ class AllMusicCubit extends Cubit<AllMusicState>{
 
       if (musicIndex != -1 && musics[musicIndex].isLiked) {
         try {
-
-          musics[musicIndex].isLiked = false;
-          emit(LoadedMusic(List.from(musics)));
-
-
           await musicService.unlikeMusic(musicId);
+          updateLikeStatus(musicId, false);
         } catch (e) {
-
-          musics[musicIndex].isLiked = true;
-          emit(LoadedMusic(List.from(musics)));
-          emit(ErrorMusic(e.toString()));
+          updateLikeStatus(musicId, true);
         }
       }
     }

@@ -54,6 +54,13 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
+              decoration: BoxDecoration(
+                color: AppColor.btnPlay,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(25.w),
+                  bottomLeft: Radius.circular(25.w),
+                )
+              ),
               child: Padding(
                 padding:EdgeInsets.all(25.w),
                 child: Column(
@@ -64,18 +71,41 @@ class ProfileScreen extends StatelessWidget {
                           onTap: (){context.goNamed(RouteName.mainHome);},
                         ),
 
-                        Text("Profile",style:AppTextStyle.Textlight.copyWith(fontWeight: FontWeight.w700),),
+                        Text("Profile",style:AppTextStyle.TextBold.copyWith(fontSize: 17.w),),
 
                         Icon(Icons.more_vert,color:AppColor.solidWhite,)
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.w),
+                      padding: EdgeInsets.symmetric(vertical: 10.w),
                       child: Container(width: 93.w,height: 93.w,
                         child:SvgPicture.asset("assets/icons/avatar-girl-svgrepo-com.svg") ,
                       ),
                     ),
-                    Text(user.full_name)
+                    Text(user.email ,style:AppTextStyle.Textlight.copyWith(fontSize: 12.w),),
+                    SizedBox(height:20.w,),
+                    Text(user.full_name ,style:AppTextStyle.TextBold.copyWith(fontSize:20.w),),
+                    SizedBox(height: 20.w,),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Text("778" ,style:AppTextStyle.TextBold.copyWith(fontSize:20.w),),
+                            SizedBox(height: 5.w,),
+                            Text("Followers" ,style:AppTextStyle.Textlight.copyWith(fontSize: 12.w),),
+                          ],
+
+                        ),
+                        Column(
+                          children: [
+                            Text("243" ,style:AppTextStyle.TextBold.copyWith(fontSize:20.w),),
+                            SizedBox(height: 5.w,),
+                            Text("Following" ,style:AppTextStyle.Textlight.copyWith(fontSize: 12.w),),
+                          ],
+
+                        )
+                      ],
+                    )
                     
 
 

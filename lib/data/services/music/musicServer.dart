@@ -114,7 +114,8 @@ class MusicServer {
   Future<String> likeMusic(int musicId) async {
     final response = await _apiClient.patch('/musics/$musicId/like');
     if (response.statusCode == 200) {
-      return response.data as String; // پیام موفقیت
+      final data = response.data as Map<String, dynamic>;
+      return data['message'] as String;
     } else {
       throw Exception('Failed to like music: ${response.data['detail']}');
     }
@@ -123,9 +124,31 @@ class MusicServer {
   Future<String> unlikeMusic(int musicId) async {
     final response = await _apiClient.patch('/musics/$musicId/unlike');
     if (response.statusCode == 200) {
-      return response.data as String; // پیام موفقیت
+      final data = response.data as Map<String, dynamic>;
+      return data['message'] as String;
     } else {
       throw Exception('Failed to unlike music: ${response.data['detail']}');
+    }
+  }
+  Future<List<Music>> getLikedMusic() async {
+    final token = await getIt<TokenManager>().getToken();
+    if (token == null) {
+      throw Exception('No token available');
+    }
+    try {
+      final response = await _apiClient.get(
+        '/musics/liked-music',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return (response.data as List).map((json) => Music.fromJson(json)).toList();
+      } else {
+        throw ServerException('پاسخ غیرمنتظره از سرور: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw handleDioException(e);
     }
   }
 
