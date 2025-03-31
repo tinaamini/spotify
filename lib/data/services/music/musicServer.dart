@@ -58,7 +58,7 @@ class MusicServer {
 
     final formData = FormData.fromMap({
       'name': name,
-      'artist_id': 1,
+      'artist_id': artistId,
       'audio': await MultipartFile.fromFile(audioFile.path),
       'cover': await MultipartFile.fromFile(coverFile.path),
     });

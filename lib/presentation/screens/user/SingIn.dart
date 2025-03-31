@@ -37,7 +37,7 @@ class SingIn extends StatelessWidget {
                     children: [
                       BackPage(
                         onTap: () {
-                          context.goNamed(RouteName.RegisterOrSingUp);
+                          context.goNamed(RouteName.registerOrSingUp);
                         },
                       ),
                       SizedBox(width: 85.w),
@@ -192,7 +192,7 @@ class SingIn extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    context.goNamed(RouteName.Register);
+                                    context.goNamed(RouteName.register);
                                   },
                                   child: Text(
                                     'Register Now ',

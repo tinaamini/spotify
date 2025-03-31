@@ -37,7 +37,7 @@ class GetStarter extends StatelessWidget {
                 ),
                 SizedBox(height: 40.w,),
                 Custombutton(height: 92.w,width: 329.w, text: 'Get Started',
-                  onTap: () {      context.goNamed(RouteName.Choosemode);
+                  onTap: () {      context.goNamed(RouteName.choosemode);
                   },)
               ],
             ) )

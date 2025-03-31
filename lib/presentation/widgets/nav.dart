@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:spotify/constant/app_color.dart';
+import '../screens/music/artistProfile.dart';
 import '../screens/music/favorite.dart';
 import '../screens/music/home.dart';
 import '../screens/user/Profile.dart';
@@ -10,7 +11,10 @@ import '../screens/music/discovery.dart';
 
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int initialIndex;
+  final int artistId;
+  final String? artistName;
+  const MainScreen({super.key, required this.initialIndex, required this.artistId, this.artistName});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -18,13 +22,17 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex == 4 ? 0 : widget.initialIndex.clamp(0, 3); }
 
-  // لیست صفحات
   final List<Widget> _screens = [
     Home(),
     DiscoveryScreen(),
     FaveritScreen(),
     ProfileScreen(),
+    ArtistProfile(artistId:0,artistName: '')
   ];
 
   void _onItemTapped(int index) {
@@ -38,10 +46,13 @@ class _MainScreenState extends State<MainScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final itemWidth = screenWidth / 4;
     final linePosition = itemWidth * _selectedIndex + (itemWidth - 23.w) / 2;
+
+    _screens[4] = ArtistProfile(artistId: widget.artistId,artistName: widget.artistName ?? '',);
+    final currentScreen = (widget.initialIndex == 4 && _selectedIndex == 0) ? _screens[4] : _screens[_selectedIndex];
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: _screens[_selectedIndex]),
+          Positioned.fill(child: currentScreen),
           Positioned(
             left: 0,
             right: 0,
@@ -131,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           Positioned(
             left: linePosition,
-            bottom: 75,
+            bottom:65,
             child: Container(height: 4.h,width: 23.w,
             decoration: BoxDecoration(
               color: AppColor.appButtonColor,

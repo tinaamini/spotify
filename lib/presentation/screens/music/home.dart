@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:spotify/constant/app_color.dart';
 import 'package:spotify/constant/app_text_style.dart';
 import '../../../core/di/di.dart';
@@ -17,6 +18,7 @@ import '../../../logic/cubit/music/tab_cubit.dart';
 import '../../../logic/state/music/allMusic_cubit.dart';
 import '../../../logic/state/music/artist_state.dart';
 import '../../../logic/state/music/tabState.dart';
+import '../../../routes/routs_name.dart';
 import '../../widgets/btn_play.dart';
 
 class Home extends StatelessWidget {
@@ -84,6 +86,7 @@ class Home extends StatelessWidget {
                 _buildPlayList(context),
 
 
+
               ],
             ),
           ),
@@ -123,7 +126,10 @@ class Home extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     context.read<TabCubit>().selectTab(index);
-                  },
+                    if (tabs[index].toLowerCase() == 'artist') {
+                      context.goNamed(RouteName.artist);
+
+                  }},
                   child: Container(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,

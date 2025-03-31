@@ -115,7 +115,7 @@ class Choosemode extends StatelessWidget {
                       width: 329.w,
                       text: 'Continue',
                       onTap: () {
-                        context.goNamed(RouteName.RegisterOrSingUp);
+                        context.goNamed(RouteName.registerOrSingUp);
                       },
                     ),
                   ],

@@ -48,7 +48,7 @@ class RegisterOrSingUp extends StatelessWidget {
                             children: [
                               Custombutton(
                                 onTap: () {
-                                  context.goNamed(RouteName.Register);
+                                  context.goNamed(RouteName.register);
                                 },
                                 height:73.w ,
                                 width: 147.w,
@@ -65,7 +65,7 @@ class RegisterOrSingUp extends StatelessWidget {
 
                                 child: GestureDetector(
                                   onTap: (){
-                                    context.goNamed(RouteName.SingIn);
+                                    context.goNamed(RouteName.singIn);
                                   },
                                   child:
 

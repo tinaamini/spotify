@@ -36,7 +36,7 @@ class Register extends StatelessWidget {
                     children: [
                       BackPage(
                         onTap: () {
-                          context.goNamed(RouteName.RegisterOrSingUp);
+                          context.goNamed(RouteName.registerOrSingUp);
                         },
                       ),
                       SizedBox(width: 85.w),
@@ -79,7 +79,7 @@ class Register extends StatelessWidget {
           BlocListener<RegisterCubit, RegisterState>(
             listener: (context, state) {
               if (state.success) {
-                context.goNamed(RouteName.SingIn); // نویگیشن اینجا انجام می‌شه
+                context.goNamed(RouteName.singIn); // نویگیشن اینجا انجام می‌شه
               } else if (state.error != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(state.error!)),
@@ -190,7 +190,7 @@ class Register extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  context.goNamed(RouteName.Register);
+                                  context.goNamed(RouteName.register);
                                 },
                                 child: Text(
                                   'Register Now ',

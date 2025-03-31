@@ -20,7 +20,7 @@ class _LoadingState extends State<Loading> {
 
     Timer(Duration(seconds: 3), () {
 
-      context.goNamed(RouteName.GetStarter);
+      context.goNamed(RouteName.getStarter);
     });
   }
   @override

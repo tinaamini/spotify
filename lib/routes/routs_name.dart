@@ -2,12 +2,18 @@ import 'package:spotify/presentation/screens/splash/loading.dart';
 
 class RouteName {
   RouteName._();
-  static const  RegisterOrSingUp = "RegisterOrSingUp";
-  static const  SingIn = "SingIn";
-  static const  Register = "Register";
-  static const  mainHome = "Home";
-  static const  Loading = "Loading";
-  static const  GetStarter = "GetStarter";
-  static const  Choosemode = "Choosemode";
+  static const  registerOrSingUp = "RegisterOrSingUp";
+  static const  singIn = "SingIn";
+  static const  register = "Register";
+  static const  mainHome = "mainHome";
+  static const  loading = "Loading";
+  static const  getStarter = "GetStarter";
+  static const  choosemode = "Choosemode";
+  static const  artist = "artist";
+  static const  home = "Home";
+  static const  discoveryScreen = "DiscoveryScreen";
+  static const  faveritScreen = "FaveritScreen";
+  static const  profileScreen = "ProfileScreen";
+
 
 }
