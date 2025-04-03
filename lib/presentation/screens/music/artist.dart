@@ -10,6 +10,7 @@ import '../../../core/di/di.dart';
 import '../../../data/services/music/musicServer.dart';
 import '../../../logic/cubit/music/artist_cubit.dart';
 import '../../../logic/state/music/artist_state.dart';
+import '../../widgets/customButtonBack.dart';
 import '../../widgets/nav.dart';
 
 class Artist extends StatelessWidget {
@@ -23,7 +24,17 @@ class Artist extends StatelessWidget {
         appBar: PreferredSize(preferredSize: Size.fromHeight(80.0),
           child: AppBar(
             backgroundColor:AppColor.appNavColor,
-            title: Center(child: Text("Artist",style: AppTextStyle.TextBold,)),
+            title: Padding(
+              padding:  EdgeInsets.only(top: 15.w,right:55.w),
+              child: Center(child: Text("Artist",style: AppTextStyle.TextBold,)),
+            ),
+            leading:   Padding(
+              padding:EdgeInsets.only(top: 15.w,left: 15.w),
+              child: CustomBackPage(onTap: (){
+                context.go('/MainScreen?index=0');
+
+              }),
+            ),
           ),
         ),
         body: Column(

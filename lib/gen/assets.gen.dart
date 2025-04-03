@@ -53,20 +53,31 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Moon.svg
   String get moon => 'assets/icons/Moon.svg';
 
+  /// File path: assets/icons/Next.svg
+  String get next => 'assets/icons/Next.svg';
+
+  /// File path: assets/icons/Pause.svg
+  String get pause => 'assets/icons/Pause.svg';
+
   /// File path: assets/icons/Play.svg
   String get play => 'assets/icons/Play.svg';
+
+  /// File path: assets/icons/Previous.svg
+  String get previous => 'assets/icons/Previous.svg';
 
   /// File path: assets/icons/Profile 1.svg
   String get profile1 => 'assets/icons/Profile 1.svg';
 
-  /// File path: assets/icons/Rectangle 16.svg
-  String get rectangle16 => 'assets/icons/Rectangle 16.svg';
+  /// File path: assets/icons/Rectangle 16.png
+  AssetGenImage get rectangle16 =>
+      const AssetGenImage('assets/icons/Rectangle 16.png');
 
-  /// File path: assets/icons/Rectangle 17.svg
-  String get rectangle17 => 'assets/icons/Rectangle 17.svg';
+  /// File path: assets/icons/Rectangle 17.png
+  AssetGenImage get rectangle17 =>
+      const AssetGenImage('assets/icons/Rectangle 17.png');
 
-  /// File path: assets/icons/Rectangle 18.svg
-  String get rectangle18 => 'assets/icons/Rectangle 18.svg';
+  /// File path: assets/icons/Rectangle 22.svg
+  String get rectangle22 => 'assets/icons/Rectangle 22.svg';
 
   /// File path: assets/icons/Rectangle 8 (2).png
   AssetGenImage get rectangle82 =>
@@ -79,6 +90,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Rectangle 9 (2).png
   AssetGenImage get rectangle92 =>
       const AssetGenImage('assets/icons/Rectangle 9 (2).png');
+
+  /// File path: assets/icons/Shuffle 2.svg
+  String get shuffle2 => 'assets/icons/Shuffle 2.svg';
 
   /// File path: assets/icons/Sun 1.svg
   String get sun1 => 'assets/icons/Sun 1.svg';
@@ -113,6 +127,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/registerOrSignUp.svg
   String get registerOrSignUp => 'assets/icons/registerOrSignUp.svg';
 
+  /// File path: assets/icons/repeat-2-svgrepo-com (2).svg
+  String get repeat2SvgrepoCom2 => 'assets/icons/repeat-2-svgrepo-com (2).svg';
+
+  /// File path: assets/icons/repeat-2-svgrepo-com (3).svg
+  String get repeat2SvgrepoCom3 => 'assets/icons/repeat-2-svgrepo-com (3).svg';
+
   /// List of all assets
   List<dynamic> get values => [
     discovery1,
@@ -125,14 +145,18 @@ class $AssetsIconsGen {
     home,
     left,
     moon,
+    next,
+    pause,
     play,
+    previous,
     profile1,
     rectangle16,
     rectangle17,
-    rectangle18,
+    rectangle22,
     rectangle82,
     rectangle91,
     rectangle92,
+    shuffle2,
     sun1,
     vector4,
     vector6,
@@ -144,6 +168,8 @@ class $AssetsIconsGen {
     banner2,
     google,
     registerOrSignUp,
+    repeat2SvgrepoCom2,
+    repeat2SvgrepoCom3,
   ];
 }
 

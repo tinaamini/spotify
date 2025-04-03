@@ -69,7 +69,6 @@ class ApiClient {
       }) async {
     try {
       await _setAuthHeader();
-      print('Request headers: ${_dio.options.headers}');
       final response = await _dio.patch(
         path,
         data: data,

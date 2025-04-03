@@ -67,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        BackPage(
+                        CustomBackPage(
                           onTap: (){context.goNamed(RouteName.mainHome);},
                         ),
 

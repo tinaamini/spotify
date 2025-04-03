@@ -1,4 +1,4 @@
-class Music {
+class MusicModel {
   final int id;
   final String name;
   final int artistId;
@@ -6,7 +6,7 @@ class Music {
   final String coverUrl;
   bool isLiked;
 
-  Music({
+  MusicModel({
     required this.id,
     required this.name,
     required this.artistId,
@@ -15,8 +15,8 @@ class Music {
     this.isLiked = false,
   });
 
-  factory Music.fromJson(Map<String, dynamic> json) {
-    return Music(
+  factory MusicModel.fromJson(Map<String, dynamic> json) {
+    return MusicModel(
       id: json['id'] as int? ?? int.parse(json['id'].toString()),
       name: json['name'] as String,
       artistId: json['artist_id'] as int,

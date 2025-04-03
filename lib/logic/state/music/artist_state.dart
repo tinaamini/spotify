@@ -1,7 +1,7 @@
-import '../../../data/models/music/artist.dart';
+import '../../../data/models/music/artistmodel.dart';
 
 class ArtistState {
-  final List<Artist> artists;
+  final List<ArtistModel> artists;
   final bool isLoading;
   final String? error;
 
@@ -12,7 +12,7 @@ class ArtistState {
   });
 
   ArtistState copyWith({
-    List<Artist>? artists,
+    List<ArtistModel>? artists,
     bool? isLoading,
     String? error,
   }) {

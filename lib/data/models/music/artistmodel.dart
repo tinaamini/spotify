@@ -1,11 +1,16 @@
-class ArtistModel{
-  final String imagePath;
-  final String nameMusic;
-  final String nameArtist;
+class ArtistModel {
+  final int id;
+  final String name;
 
   ArtistModel({
-    required this.imagePath,
-    required this.nameMusic,
-    required this.nameArtist
+    required this.id,
+    required this.name,
   });
+
+  factory ArtistModel.fromJson(Map<String, dynamic> json) {
+    return ArtistModel(
+      id: json['id'] as int? ?? int.parse(json['id'].toString()),
+      name: json['name'],
+    );
+  }
 }

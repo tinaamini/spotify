@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../data/models/music/artist.dart';
+import '../../../data/models/music/artistmodel.dart';
 import '../../../data/services/music/musicServer.dart';
 import '../../state/music/artist_state.dart';
 
@@ -12,7 +12,7 @@ class ArtistCubit extends Cubit<ArtistState> {
     emit(state.copyWith(isLoading: true, error: null));
     try {
       final artists = await _musicServer.getArtists(skip: skip, limit: limit);
-      final uniqueArtists = artists.fold<Map<String, Artist>>({}, (map, artist) {
+      final uniqueArtists = artists.fold<Map<String, ArtistModel>>({}, (map, artist) {
         map[artist.name] = artist;
         return map;
       })

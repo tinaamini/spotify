@@ -10,10 +10,12 @@ class RouteName {
   static const  getStarter = "GetStarter";
   static const  choosemode = "Choosemode";
   static const  artist = "artist";
-  static const  home = "Home";
-  static const  discoveryScreen = "DiscoveryScreen";
-  static const  faveritScreen = "FaveritScreen";
-  static const  profileScreen = "ProfileScreen";
+  static const  musicPage = "musicPage";
+  static const  lyrics = "lyrics";
+
+
+
+
 
 
 }

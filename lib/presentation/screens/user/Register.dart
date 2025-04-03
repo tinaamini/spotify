@@ -34,7 +34,7 @@ class Register extends StatelessWidget {
                   padding: EdgeInsets.only(top: 50.w, left: 30.w),
                   child: Row(
                     children: [
-                      BackPage(
+                      CustomBackPage(
                         onTap: () {
                           context.goNamed(RouteName.registerOrSingUp);
                         },

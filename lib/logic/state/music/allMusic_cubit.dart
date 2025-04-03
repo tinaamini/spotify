@@ -1,4 +1,4 @@
-import '../../../data/models/music/allMusic.dart';
+import '../../../data/models/music/allMusicModel.dart';
 
 abstract class AllMusicState {
   const AllMusicState();
@@ -13,7 +13,7 @@ class LoadingMusic extends AllMusicState {
 }
 
 class LoadedMusic extends AllMusicState {
-  final List<Music> musics;
+  final List<MusicModel> musics;
 
   const LoadedMusic(this.musics);
 }

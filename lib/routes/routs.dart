@@ -1,12 +1,12 @@
 import 'package:go_router/go_router.dart';
+import 'package:spotify/presentation/screens/music/musicPage.dart';
 import 'package:spotify/routes/routs_name.dart';
+import '../data/models/music/allMusicModel.dart';
+import '../data/models/music/artistmodel.dart';
 import '../presentation/screens/music/artist.dart';
-import '../presentation/screens/music/discovery.dart';
-import '../presentation/screens/music/favorite.dart';
-import '../presentation/screens/music/home.dart';
+import '../presentation/screens/music/lyrics.dart';
 import '../presentation/screens/splash/getStarter.dart';
 import '../presentation/screens/splash/loading.dart';
-import '../presentation/screens/user/Profile.dart';
 import '../presentation/screens/user/Register.dart';
 import '../presentation/screens/user/RegisterOrSingUp.dart';
 import '../presentation/screens/user/SingIn.dart';
@@ -63,24 +63,25 @@ final GoRouter router = GoRouter(
       builder: (context, state) => Artist(),
     ),
     GoRoute(
-      name: RouteName.home,
-      path: "/${RouteName.home}",
-      builder: (context, state) => Home(),
+      name: RouteName.musicPage,
+      path: "/musicPage",
+      builder: (context, state) {
+        final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+        final MusicModel music = extra['music'] as MusicModel;
+        final ArtistModel artist = extra['artist'] as ArtistModel;
+        return Musicpage(music: music, artist: artist);
+      },
     ),
     GoRoute(
-      name: RouteName.discoveryScreen,
-      path: "/${RouteName.discoveryScreen}",
-      builder: (context, state) => DiscoveryScreen(),
+      name: RouteName.lyrics,
+      path: "/lyrics",
+      builder: (context, state) {
+        final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+        final MusicModel music = extra['music'] as MusicModel;
+        final ArtistModel artist = extra['artist'] as ArtistModel;
+        return LyricsScreen(music: music, artist: artist);
+      },
     ),
-    GoRoute(
-      name: RouteName.faveritScreen,
-      path: "/${RouteName.faveritScreen}",
-      builder: (context, state) => FaveritScreen(),
-    ),
-    GoRoute(
-      name: RouteName.profileScreen,
-      path: "/${RouteName.profileScreen}",
-      builder: (context, state) => ProfileScreen(),
-    ),
+
   ],
 );

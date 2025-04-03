@@ -22,5 +22,11 @@ class AppTextStyle{
     fontWeight: FontWeight.w700,
     color: AppColor.textBold,
   );
+  static TextStyle Timer = TextStyle(
+    fontFamily: 'Satoshi',
+    fontSize: 12.w,
+    fontWeight: FontWeight.w700,
+    color: AppColor.timer,
+  );
 
 }

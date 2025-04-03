@@ -2,9 +2,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:spotify/constant/app_color.dart';
 import 'package:flutter/material.dart';
 
-class BackPage extends StatelessWidget {
+class CustomBackPage extends StatelessWidget {
   final VoidCallback onTap;
-  const BackPage({
+  const CustomBackPage({
     super.key,
     required this.onTap,
   });

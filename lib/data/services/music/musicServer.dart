@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import '../../../core/di/di.dart';
 import '../../../core/exception/exceptions.dart';
 import '../../../core/network/api_client.dart';
-import '../../models/music/allMusic.dart';
-import '../../models/music/artist.dart';
+import '../../models/music/allMusicModel.dart';
+import '../../models/music/artistmodel.dart';
 import '../tokenmanager.dart';
 
 class MusicServer {
@@ -14,7 +14,7 @@ class MusicServer {
 
   MusicServer(this._apiClient);
 
-  Future<List<Music>> getAllMusic({
+  Future<List<MusicModel>> getAllMusic({
     int? artistId,
     int skip = 0,
     int limit = 100,
@@ -36,7 +36,7 @@ class MusicServer {
       }, options: null,
     );
     if (response.statusCode == 200) {
-      return (response.data as List).map((json) => Music.fromJson(json)).toList();
+      return (response.data as List).map((json) => MusicModel.fromJson(json)).toList();
     } else {
       throw ServerException('پاسخ غیرمنتظره از سرور: ${response.statusCode}');
     }
@@ -45,7 +45,7 @@ class MusicServer {
     }
   }
 
-  Future<Music> createMusic({
+  Future<MusicModel> createMusic({
     required String name,
     required int artistId,
     required File audioFile,
@@ -74,7 +74,7 @@ class MusicServer {
     );
     if (response.statusCode == 200) {
       print("Upload successful with status 200");
-      return Music.fromJson(response.data);
+      return MusicModel.fromJson(response.data);
     } else {
       throw ServerException('پاسخ غیرمنتظره از سرور: ${response.statusCode}');
     }
@@ -82,7 +82,7 @@ class MusicServer {
   throw handleDioException(e);
   }
 }
-  Future<List<Artist>> getArtists({int skip = 0, int limit = 100}) async {
+  Future<List<ArtistModel>> getArtists({int skip = 0, int limit = 100}) async {
     final token = await getIt<TokenManager>().getToken();
     if (token == null) {
       throw ValidationException('توکن در دسترس نیست');
@@ -103,7 +103,7 @@ class MusicServer {
       if (response.statusCode == 200) {
 
         final List<dynamic> data = response.data;
-        return data.map((json) => Artist.fromJson(json)).toList();
+        return data.map((json) => ArtistModel.fromJson(json)).toList();
       } else {
         throw ServerException('پاسخ غیرمنتظره از سرور: ${response.statusCode}');
       }
@@ -130,7 +130,7 @@ class MusicServer {
       throw Exception('Failed to unlike music: ${response.data['detail']}');
     }
   }
-  Future<List<Music>> getLikedMusic() async {
+  Future<List<MusicModel>> getLikedMusic() async {
     final token = await getIt<TokenManager>().getToken();
     if (token == null) {
       throw Exception('No token available');
@@ -143,7 +143,7 @@ class MusicServer {
         },
       );
       if (response.statusCode == 200) {
-        return (response.data as List).map((json) => Music.fromJson(json)).toList();
+        return (response.data as List).map((json) => MusicModel.fromJson(json)).toList();
       } else {
         throw ServerException('پاسخ غیرمنتظره از سرور: ${response.statusCode}');
       }
