@@ -11,10 +11,11 @@ import '../../../core/network/api_client.dart';
 import '../../../data/models/music/ListModel.dart';
 import '../../../data/models/music/artistmodel.dart';
 import '../../../data/services/music/musicServer.dart';
+import '../../../data/services/tokenmanager.dart';
 import '../../../logic/cubit/music/allMusic_cubit.dart';
 import '../../../logic/cubit/music/artist_cubit.dart';
 import '../../../logic/cubit/music/tab_cubit.dart';
-import '../../../logic/state/music/allMusic_cubit.dart';
+import '../../../logic/state/music/allMusic_State.dart';
 import '../../../logic/state/music/artist_state.dart';
 import '../../../logic/state/music/tabState.dart';
 import '../../../routes/routs_name.dart';
@@ -42,53 +43,64 @@ class Home extends StatelessWidget {
       ],
       child: SafeArea(
         child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
+          body:BlocListener<AllMusicCubit, AllMusicState>(
+    listener: (context, state) {
+    if (state is ErrorMusic && state.isTokenInvalid) {
+    ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text("توکن شما منقضی شده است. لطفاً دوباره وارد شوید.")),
+    );
+    getIt<TokenManager>().clearToken();
+    context.goNamed(RouteName.singIn);
+    }
+    },
+    child:SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 30.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 30.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: SvgPicture.asset("assets/icons/Vector.svg"),
-                      ),
-                      SvgPicture.asset("assets/icons/Vector (4).svg"),
-                      GestureDetector(
-                        onTap: () {},
+                GestureDetector(
+                  onTap: () {},
+                  child: SvgPicture.asset("assets/icons/Vector.svg"),
+                ),
+                SvgPicture.asset("assets/icons/Vector (4).svg"),
+                GestureDetector(
+                  onTap: () {},
 
-                        child: Icon(Icons.more_vert, color: Colors.white),
-                      ),
-                    ],
-                  ),
+                  child: Icon(Icons.more_vert, color: Colors.white),
                 ),
-                _buildBanner(context),
-                _buildList(context),
-                _buildArtist(context),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 35.w,
-                    vertical: 28.w,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Playlist", style: AppTextStyle.TextButton),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text("See More", style: AppTextStyle.Textlight),
-                      ),
-                    ],
-                  ),
-                ),
-                _buildPlayList(context),
               ],
             ),
           ),
+          _buildBanner(context),
+          _buildList(context),
+          _buildArtist(context),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 35.w,
+              vertical: 28.w,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Playlist", style: AppTextStyle.TextButton),
+                GestureDetector(
+                  onTap: () {},
+                  child: Text("See More", style: AppTextStyle.Textlight),
+                ),
+              ],
+            ),
+          ),
+          _buildPlayList(context),
+        ],
+      ),
+    ),
+
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildBanner(BuildContext context) {
@@ -257,7 +269,8 @@ class Home extends StatelessWidget {
                 if (musicState is LoadingMusic) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (musicState is LoadedMusic) {
-                  return ListView.builder(
+                  return
+                    ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: musicState.musics.length,
                     itemBuilder: (context, index) {

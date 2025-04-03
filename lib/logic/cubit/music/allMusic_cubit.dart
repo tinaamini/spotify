@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/exception/exceptions.dart';
 import '../../../data/services/music/musicServer.dart';
-import '../../state/music/allMusic_cubit.dart';
+import '../../state/music/allMusic_State.dart';
 
 class AllMusicCubit extends Cubit<AllMusicState>{
   final MusicServer musicService;
@@ -25,7 +27,7 @@ class AllMusicCubit extends Cubit<AllMusicState>{
       }
       emit(LoadedMusic(musics));
     } catch (e) {
-      emit(ErrorMusic(e.toString()));
+      _handleError(e);
     }
   }
   void updateLikeStatus(int musicId, bool isLiked) {
@@ -71,5 +73,14 @@ class AllMusicCubit extends Cubit<AllMusicState>{
         }
       }
     }
+  }
+  void _handleError(dynamic e) {
+    final exception = e is AppException ? e : handleDioException(e as DioException);
+    final isTokenInvalid = exception is ServerException && exception.statusCode == 401;
+
+    emit(ErrorMusic(
+      exception.message,
+      isTokenInvalid: isTokenInvalid,
+    ));
   }
 }

@@ -20,6 +20,6 @@ class LoadedMusic extends AllMusicState {
 
 class ErrorMusic extends AllMusicState {
   final String message;
-
-  const ErrorMusic(this.message);
+  final bool isTokenInvalid;
+  const ErrorMusic(this.message,{this.isTokenInvalid = false});
 }

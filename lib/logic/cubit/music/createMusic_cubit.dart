@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/services/music/musicServer.dart';
-import '../../state/music/allMusic_cubit.dart';
+import '../../state/music/allMusic_State.dart';
 
 class CreateMusicCubit extends Cubit <AllMusicState>{
   final MusicServer musicService;
