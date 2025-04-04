@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/services/music/musicServer.dart';
 import '../../state/music/allMusic_State.dart';
+import '../../state/music/createMusic_state.dart';
 
-class CreateMusicCubit extends Cubit <AllMusicState>{
+class CreateMusicCubit extends Cubit <CreateMusicState>{
   final MusicServer musicService;
-  CreateMusicCubit(this.musicService) : super(const InitialMusic());
+  CreateMusicCubit(this.musicService) : super(const CreateMusicInitial());
 
 
   Future<void> createMusic({
@@ -16,7 +17,7 @@ class CreateMusicCubit extends Cubit <AllMusicState>{
     required File audioFile,
     required File coverFile,
   }) async {
-    emit(const LoadingMusic());
+    emit(const CreateMusicLoading());
 
     try {
       final newMusic = await musicService.createMusic(
@@ -25,14 +26,8 @@ class CreateMusicCubit extends Cubit <AllMusicState>{
         audioFile: audioFile,
         coverFile: coverFile,
       );
-      if (state is LoadedMusic) {
-        final currentMusics = (state as LoadedMusic).musics;
-        emit(LoadedMusic([...currentMusics, newMusic]));
-      } else {
-        emit(LoadedMusic([newMusic]));
-      }
+      emit(const CreateMusicSuccess());
     } catch (e) {
-      emit(ErrorMusic(e.toString()));
-    }
+      emit(CreateMusicError("Failed to upload music: $e"));    }
   }
 }

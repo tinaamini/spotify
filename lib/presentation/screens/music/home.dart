@@ -26,21 +26,17 @@ class Home extends StatelessWidget {
   Home({super.key});
 
   final List<String> tabs = ['News', 'Video', 'Artist', 'Podcast'];
+  final TabCubit _tabCubit = TabCubit();
+  final AllMusicCubit _allMusicCubit = AllMusicCubit(getIt<MusicServer>())..fetchMusics();
+  final ArtistCubit _artistCubit = ArtistCubit(getIt<MusicServer>())..fetchArtists();
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => TabCubit()),
-        BlocProvider(
-          create:
-              (context) =>
-                  AllMusicCubit(MusicServer(getIt<ApiClient>()))..fetchMusics(),
-        ),
-        BlocProvider(
-          create:
-              (context) => ArtistCubit(getIt<MusicServer>())..fetchArtists(),
-        ),
+        BlocProvider.value(value: _tabCubit),
+        BlocProvider.value(value: _allMusicCubit),
+        BlocProvider.value(value: _artistCubit),
       ],
       child: SafeArea(
         child: Scaffold(
@@ -134,7 +130,7 @@ class Home extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    context.read<TabCubit>().selectTab(index);
+                    _tabCubit.selectTab(index);
                     if (tabs[index].toLowerCase() == 'artist') {
                       context.goNamed(RouteName.artist);
                     }
@@ -294,7 +290,6 @@ class Home extends StatelessWidget {
                               height: 37.w,
                               child: CustomBtnPlay(
                                 onTap: () {
-                                  print('Play: ${music.audioUrl}');
                                   getIt<MusicPlayerCubit>().loadMusic(music, musicState.musics);
                                   context.goNamed(
                                     RouteName.musicPage,
@@ -336,13 +331,9 @@ class Home extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 if (music.isLiked) {
-                                  context.read<AllMusicCubit>().unlikeMusic(
-                                    music.id,
-                                  );
+                                  _allMusicCubit.unlikeMusic(music.id);
                                 } else {
-                                  context.read<AllMusicCubit>().likeMusic(
-                                    music.id,
-                                  );
+                                  _allMusicCubit.likeMusic(music.id);
                                 }
                               },
                               child: SvgPicture.asset(
