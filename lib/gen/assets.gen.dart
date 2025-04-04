@@ -133,6 +133,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/repeat-2-svgrepo-com (3).svg
   String get repeat2SvgrepoCom3 => 'assets/icons/repeat-2-svgrepo-com (3).svg';
 
+  /// File path: assets/icons/shuffle-01-svgrepo-com.svg
+  String get shuffle01SvgrepoCom => 'assets/icons/shuffle-01-svgrepo-com.svg';
+
   /// List of all assets
   List<dynamic> get values => [
     discovery1,
@@ -170,6 +173,7 @@ class $AssetsIconsGen {
     registerOrSignUp,
     repeat2SvgrepoCom2,
     repeat2SvgrepoCom3,
+    shuffle01SvgrepoCom,
   ];
 }
 

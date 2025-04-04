@@ -16,6 +16,7 @@ import 'package:spotify/logic/state/music/allMusic_State.dart';
 import 'package:spotify/logic/state/music/artist_state.dart';
 import 'package:spotify/routes/routs_name.dart';
 import '../../../data/services/tokenmanager.dart';
+import '../../../logic/cubit/music/musicPlayer_cubit.dart';
 import '../../widgets/btn_play.dart';
 import '../../widgets/customButtonBack.dart';
 
@@ -27,13 +28,13 @@ class ArtistProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final musicPlayerCubit = getIt<MusicPlayerCubit>();
     return SafeArea(
       child: Scaffold(
         body: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => AllMusicCubit(getIt<MusicServer>())
-                ..fetchMusics(artistId: artistId),
+              create: (context) => AllMusicCubit(getIt<MusicServer>())..fetchMusics(artistId: artistId),
             ),
             BlocProvider(
               create: (context) => ArtistCubit(getIt<MusicServer>())..fetchArtists(),
@@ -187,7 +188,7 @@ class ArtistProfile extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
             if (state.error != null) {
-              return Center(child: Text('خطا در بارگذاری آرتیست‌ها: ${state.error}'));
+              return Center(child: Text('خطا در بارگذاری آرتیست‌ها: ${state.error}', style: AppTextStyle.TextBold));
             }
             return BlocBuilder<AllMusicCubit, AllMusicState>(
               builder: (context, musicState) {
@@ -225,6 +226,7 @@ class ArtistProfile extends StatelessWidget {
                               height: 37.w,
                               child: CustomBtnPlay(
                                 onTap: () {
+                                  getIt<MusicPlayerCubit>().loadMusic(music, artistMusics);
                                   context.goNamed(
                                     RouteName.musicPage,
                                     extra: {'music': music, 'artist': artist},

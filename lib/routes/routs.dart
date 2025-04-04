@@ -1,10 +1,12 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spotify/presentation/screens/music/musicPage.dart';
 import 'package:spotify/routes/routs_name.dart';
+import '../core/di/di.dart';
 import '../data/models/music/allMusicModel.dart';
 import '../data/models/music/artistmodel.dart';
+import '../logic/cubit/music/musicPlayer_cubit.dart';
 import '../presentation/screens/music/artist.dart';
-import '../presentation/screens/music/lyrics.dart';
 import '../presentation/screens/splash/getStarter.dart';
 import '../presentation/screens/splash/loading.dart';
 import '../presentation/screens/user/Register.dart';
@@ -69,17 +71,12 @@ final GoRouter router = GoRouter(
         final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
         final MusicModel music = extra['music'] as MusicModel;
         final ArtistModel artist = extra['artist'] as ArtistModel;
-        return Musicpage(music: music, artist: artist);
-      },
-    ),
-    GoRoute(
-      name: RouteName.lyrics,
-      path: "/lyrics",
-      builder: (context, state) {
-        final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
-        final MusicModel music = extra['music'] as MusicModel;
-        final ArtistModel artist = extra['artist'] as ArtistModel;
-        return LyricsScreen(music: music, artist: artist);
+        final List<MusicModel> musicList = getIt<MusicPlayerCubit>().currentMusicList; //
+        return Musicpage(
+          initialMusic: music,
+          artist: artist,
+          musicList: musicList,
+        );
       },
     ),
 

@@ -14,6 +14,7 @@ import '../../../data/services/music/musicServer.dart';
 import '../../../data/services/tokenmanager.dart';
 import '../../../logic/cubit/music/allMusic_cubit.dart';
 import '../../../logic/cubit/music/artist_cubit.dart';
+import '../../../logic/cubit/music/musicPlayer_cubit.dart';
 import '../../../logic/cubit/music/tab_cubit.dart';
 import '../../../logic/state/music/allMusic_State.dart';
 import '../../../logic/state/music/artist_state.dart';
@@ -122,9 +123,9 @@ class Home extends StatelessWidget {
 
   Widget _buildList(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 20.w, left: 30.w),
+      padding: EdgeInsets.only(top: 17.w, left: 30.w),
       child: Container(
-        height: 50.w,
+        height:40.w,
         child: BlocBuilder<TabCubit, TabState>(
           builder: (context, state) {
             return ListView.builder(
@@ -192,7 +193,7 @@ class Home extends StatelessWidget {
 
   Widget _buildArtist(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 30.w, top: 20.w),
+      padding: EdgeInsets.only(left: 30.w, top: 17.w),
       child: Container(
         height: 240.h,
 
@@ -294,6 +295,7 @@ class Home extends StatelessWidget {
                               child: CustomBtnPlay(
                                 onTap: () {
                                   print('Play: ${music.audioUrl}');
+                                  getIt<MusicPlayerCubit>().loadMusic(music, musicState.musics);
                                   context.goNamed(
                                     RouteName.musicPage,
                                     extra: {'music': music, 'artist': artist},

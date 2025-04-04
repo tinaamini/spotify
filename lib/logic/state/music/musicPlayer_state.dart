@@ -9,6 +9,7 @@ class MusicPlayerState {
   final String? error;
   final bool showLyrics;
   final bool isRepeating;
+  final bool isShuffling;
 
   MusicPlayerState({
     required this.isLoading,
@@ -19,6 +20,7 @@ class MusicPlayerState {
     this.error,
     this.showLyrics = false,
     required this.isRepeating,
+    required this.isShuffling,
   });
 
   factory MusicPlayerState.initial() => MusicPlayerState(
@@ -29,6 +31,7 @@ class MusicPlayerState {
     position: Duration.zero,
     showLyrics:false,
     isRepeating: false,
+    isShuffling: false,
 
   );
 
@@ -41,6 +44,7 @@ class MusicPlayerState {
     bool? isRepeating,
     String? error,
     bool? showLyrics,
+    bool? isShuffling,
   }) {
     return MusicPlayerState(
       isLoading: isLoading ?? this.isLoading,
@@ -51,6 +55,7 @@ class MusicPlayerState {
       error: error ?? this.error,
       showLyrics: showLyrics ?? this.showLyrics,
       isRepeating: isRepeating ?? this.isRepeating,
+      isShuffling: isShuffling ?? this.isShuffling,
     );
   }
 }

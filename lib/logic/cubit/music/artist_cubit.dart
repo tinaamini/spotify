@@ -9,22 +9,29 @@ class ArtistCubit extends Cubit<ArtistState> {
   ArtistCubit(this._musicServer) : super(ArtistState());
 
   Future<void> fetchArtists({int skip = 0, int limit = 100}) async {
-    emit(state.copyWith(isLoading: true, error: null));
+    if (!isClosed) {
+      emit(state.copyWith(isLoading: true, error: null));
+    }
     try {
       final artists = await _musicServer.getArtists(skip: skip, limit: limit);
       final uniqueArtists = artists.fold<Map<String, ArtistModel>>({}, (map, artist) {
         map[artist.name] = artist;
         return map;
-      })
-          .values
-          .toList();
-      emit(state.copyWith(artists: uniqueArtists, isLoading: false));
+      }).values.toList();
+      if (!isClosed) {
+        emit(state.copyWith(artists: uniqueArtists, isLoading: false));
+      }
     } catch (e) {
-      emit(state.copyWith(isLoading: false, error: e.toString()));
+      if (!isClosed) {
+        emit(state.copyWith(isLoading: false, error: e.toString()));
+      }
     }
   }
 
-
+  @override
+  Future<void> close() {
+    return super.close();
+  }
 
 
 
